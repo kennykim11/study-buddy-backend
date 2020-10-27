@@ -30,7 +30,7 @@ for (var college in downloaded){
 //console.log(courseList)
 console.log(sectionList)
 
-router.use(cors())
+router.use(cors()) //Cross-origin resource sharing
 
 
 router.get('/classes', (req, res) => {
