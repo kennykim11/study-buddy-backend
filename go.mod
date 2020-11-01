@@ -3,6 +3,7 @@ module github.com/kennykim11/study-buddy-backend
 go 1.15
 
 require (
+	github.com/99designs/gqlgen v0.13.0
 	github.com/badoux/checkmail v1.2.0 // indirect
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible // indirect
 	github.com/gin-gonic/gin v1.6.3
@@ -11,6 +12,7 @@ require (
 	github.com/jinzhu/gorm v1.9.16 // indirect
 	github.com/jmoiron/sqlx v1.2.0
 	github.com/joho/godotenv v1.3.0 // indirect
+	github.com/vektah/gqlparser/v2 v2.1.0
 	golang.org/x/crypto v0.0.0-20200820211705-5c72a883971a // indirect
 	gopkg.in/go-playground/assert.v1 v1.2.1 // indirect
 	gorm.io/driver/mysql v1.0.1
