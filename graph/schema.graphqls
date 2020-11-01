@@ -1,0 +1,52 @@
+enum ContactType {
+  SCHOOLEMAIL
+  PERSONALEMAIL
+  INSTAGRAM
+  MESSENGER
+  GROUPME
+  PHONE
+}
+
+type Contact {
+  contact_type: ContactType!
+  value: String!
+}
+
+type User {
+  google_id: Int!
+  created_at: Int!
+  last_modified_at: Int!
+  given_name: String!
+  family_name: String!
+  contacts: [Contact!]
+  taking: [String!]
+}
+
+type Section {
+  section_id: Int!
+  users_taking: [Int!]
+}
+
+type Query {
+  user: User!
+  sections: [Section!]
+  classmates: [User!]
+}
+
+input NewUser {
+  google_id: Int!
+  given_name: String!
+  family_name: String!
+}
+
+input ContactInput {
+  contact_type: ContactType!
+  value: String!
+}
+
+type Mutation {
+  createUser(new_user: NewUser!): User!
+  enrollInSection(user_id: Int!, section_id: Int!): Boolean
+  registerContactInfo(user_id: Int!, contact: ContactInput!): Boolean
+  sendContactMessage(from_user_id: Int!, to_user_id: Int!): Boolean
+}
