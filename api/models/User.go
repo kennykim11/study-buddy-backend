@@ -34,12 +34,6 @@ type User struct {
 	deletedAt      time.Time
 }
 
-*DB db;
-
-func newUser() {
-
-}
-
 func main() {
 	db, err := sqlx.Connect("mysql", "root:root@tcp(127.0.0.1:3306)/studybuddie")
 	if err != nil {
