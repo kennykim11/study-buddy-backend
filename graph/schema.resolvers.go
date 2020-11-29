@@ -10,10 +10,11 @@ import (
 
 	"github.com/kennykim11/study-buddy-backend/graph/generated"
 	"github.com/kennykim11/study-buddy-backend/graph/model"
-	"github.com/kennykim11/study-buddy-backend/graph/repository"
+	"github.com/kennykim11/study-buddy-backend/repository"
 )
 
-var repo = repository.UserRepository = repository.New()
+var repo repository.Repository = repository.New()
+var truevar = true
 
 func (r *mutationResolver) CreateUser(ctx context.Context, newUser model.NewUser) (*model.User, error) {
 	user := &model.User{
@@ -23,34 +24,38 @@ func (r *mutationResolver) CreateUser(ctx context.Context, newUser model.NewUser
 		GivenName:      newUser.GivenName,
 		FamilyName:     newUser.FamilyName,
 		Contacts:       []*model.Contact{},
-		Taking:         []string{},
+		Taking:         []int{},
 	}
-	r.users = append(r.users, user)
+	repo.SaveUser(ctx, user)
 	return user, nil
 }
 
 func (r *mutationResolver) EnrollInSection(ctx context.Context, userID int, sectionID int) (*bool, error) {
-	panic(fmt.Errorf("not implemented"))
+	repo.EnrollInSection(ctx, userID, sectionID)
+	return &truevar, nil
+}
+
+func (r *mutationResolver) RemoveFromSection(ctx context.Context, userID int, sectionID int) (*bool, error) {
+	repo.RemoveFromSection(ctx, userID, sectionID)
+	return &truevar, nil
 }
 
 func (r *mutationResolver) RegisterContactInfo(ctx context.Context, userID int, contact model.ContactInput) (*bool, error) {
-	panic(fmt.Errorf("not implemented"))
+	repo.RegisterContactInfo(ctx, userID, contact)
+	return &truevar, nil
 }
 
 func (r *mutationResolver) SendContactMessage(ctx context.Context, fromUserID int, toUserID int) (*bool, error) {
 	panic(fmt.Errorf("not implemented"))
+	return &truevar, nil
 }
 
-func (r *queryResolver) User(ctx context.Context) (*model.User, error) {
-	return r.users, nil
+func (r *queryResolver) User(ctx context.Context, googleID int) (*model.User, error) {
+	return repo.FindUser(ctx, googleID), nil
 }
 
-func (r *queryResolver) Sections(ctx context.Context) ([]*model.Section, error) {
-	panic(fmt.Errorf("not implemented"))
-}
-
-func (r *queryResolver) Classmates(ctx context.Context) ([]*model.User, error) {
-	panic(fmt.Errorf("not implemented"))
+func (r *queryResolver) Section(ctx context.Context, sectionID int) (*model.Section, error) {
+	return repo.FindSection(ctx, sectionID), nil
 }
 
 // Mutation returns generated.MutationResolver implementation.
@@ -61,3 +66,10 @@ func (r *Resolver) Query() generated.QueryResolver { return &queryResolver{r} }
 
 type mutationResolver struct{ *Resolver }
 type queryResolver struct{ *Resolver }
+
+// !!! WARNING !!!
+// The code below was going to be deleted when updating resolvers. It has been copied here so you have
+// one last chance to move it out of harms way if you want. There are two reasons this happens:
+//  - When renaming or deleting a resolver the old code will be put in here. You can safely delete
+//    it when you're done.
+//  - You have helper methods in this file. Move them out to keep these resolver files clean.
